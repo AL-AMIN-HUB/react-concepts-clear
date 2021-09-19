@@ -4,66 +4,63 @@ import "./App.css";
 function App() {
   return (
     <div className="App">
-      <Mobile></Mobile>
       <Article></Article>
-      <Todo></Todo>
-      <Blog heading="React" author="Jems Smith"></Blog>
-      <Blog heading="Javascript" author="Jems yarn"></Blog>
-      <Blog heading="HTML" author="Mc Carry"></Blog>
+      <Mobile></Mobile>
+      <Blog heading="Recharge Your Down Battery" author="Jhanker Mahbub"></Blog>
+      <Blog heading="What will people say?" author="Ayman Sadik"></Blog>
+      <Blog heading="Spoken English" author="Munzirin Shahid"></Blog>
+      <AllPosts></AllPosts>
     </div>
   );
 }
 
-function Todo() {
-  const [todos, setTodos] = useState([]);
-
+function AllPosts() {
+  const [posts, setPosts] = useState([]);
   useEffect(() => {
-    fetch("https://jsonplaceholder.typicode.com/todos")
+    fetch("https://jsonplaceholder.typicode.com/posts")
       .then((res) => res.json())
-      .then((data) => setTodos(data));
+      .then((data) => setPosts(data));
   }, []);
   return (
     <div>
-      <h1>Todo List {todos.length} </h1>
-      {todos.map((todo) => (
-        <User id={todo.id} title={todo.title}></User>
+      <h2 style={headerText}>All Post: {posts.length} </h2>
+      {posts.map((post) => (
+        <User id={post.id} title={post.title} body={post.body}></User>
       ))}
     </div>
   );
 }
 function User(props) {
   return (
-    <div className="blog">
-      <h2> {props.id} </h2>
-      <p> {props.title} </p>
+    <div className="blog" style={{ textTransform: "capitalize" }}>
+      <h1> {props.id} </h1>
+      <h3>Subject: {props.title} </h3>
+      <p style={{ textAlign: "left" }}> Description: {props.body} </p>
     </div>
   );
 }
 
 function Mobile() {
-  const [count, setCount] = useState(100);
-  function HandleCharge() {
-    const newCount = count - 10;
-    if (newCount < 0) {
-      return alert("Shut Down");
+  const [charge, setCharge] = useState(100);
+  function HandleChargeBtn() {
+    if (charge < 10) {
+      return alert("Shutting Down");
     }
-    setCount(newCount);
+    setCharge(charge - 10);
   }
-  function Charging() {
-    const charge = count + 10;
-    if (charge > 100) {
+  function ChargeBtn() {
+    if (charge > 90) {
       return alert("Charge Complete");
     }
-    setCount(charge);
+    setCharge(charge + 10);
   }
-
   return (
     <div>
-      <h1> {count}% </h1>
-      <button onClick={HandleCharge} style={{ marginRight: "10px" }}>
-        Battery low
+      <h1>{charge}%</h1>
+      <button onClick={HandleChargeBtn} style={{ marginRight: "10px" }}>
+        Battery Low
       </button>
-      <button onClick={Charging}>Charging</button>
+      <button onClick={ChargeBtn}>Charging</button>
     </div>
   );
 }
@@ -72,26 +69,28 @@ function Blog(props) {
   return (
     <div className="blog">
       <h3>Heading: {props.heading} </h3>
-      <p>Author: {props.author}</p>
+      <h5>Author {props.author} </h5>
     </div>
   );
 }
+const headerText = {
+  color: "#2d3436",
+  fontSize: "30px",
+  textTransform: "uppercase",
+  fontWeight: "bolder",
+};
 function Article() {
-  const headerText = {
-    color: "#e67e22",
-    fontSize: "32px",
-    fontStyle: "italic",
-  };
   return (
     <article className="blog">
-      <h3>
-        Hello <span style={headerText}>React</span> !!
-      </h3>
-      <p style={{ backgroundColor: "#95a5a6", padding: "15px", borderRadius: "10px", boxShadow: "inset -3px -5px 5px" }}>
-        Lorem ipsum dolor sit amet consectetur adipisicing elit. Delectus totam blanditiis, optio fuga iure, quibusdam alias amet omnis unde odio
-        voluptate distinctio necessitatibus natus, incidunt est quidem! Voluptates, deleniti repellat.
+      <h2>
+        Hello <span style={headerText}>React</span>!
+      </h2>
+      <p style={{ fontSize: "20px", textTransform: "capitalize", textAlign: "left" }}>
+        Lorem ipsum dolor sit amet consectetur, adipisicing elit. Beatae reprehenderit excepturi, quam earum nulla harum magni unde, placeat dolorum
+        totam atque repudiandae! Tempora quaerat error, corporis perferendis maxime ducimus voluptatum.
       </p>
     </article>
   );
 }
+
 export default App;
